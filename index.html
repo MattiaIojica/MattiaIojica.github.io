@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
+    <link rel="shortcut icon" type="image/png" href="images/logo.png" />
+    <link rel="stylesheet" href="style.css"/>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src = "https://d3js.org/d3.v6.min.js"></script>
+    <!-- <script src = "jquery-3.5.1.min.js"></script> -->
+    <script src = "script.js"></script>
+
+
+
+    <title>Color Blind Game</title>
+</head>
+
+
+
+<body>
+    <div class = "top">
+        <h1>Score:<div class = "score" type = "number">0</div></h1>
+        <div class="top top--left">
+            <p>Best Score:</p>
+            <div class = "best--score" type = "bestsc"> 0</div>
+        </div>
+        <img src="images/settings.png" alt="settings button" class="top top--right" id = "sett">
+    </div>
+
+    <main>
+        <section class="player player--active">
+            <button class= "btn">New Game</button>
+        
+            <div id = "container">
+                <svg></svg>
+            </div>
+        </section>
+    </main>  
+
+    <div class = "modal" id = "modal1">
+        <span class="close">&times;</span>
+        <div class= "modal-content">
+            <h2>Settings</h2>
+            <br>
+            <br>
+             <h3 id = "left-h3">Timer</h3>
+            <label class="switch" id = "sw1">
+                <input type="checkbox">
+            
+                <span class="slider round"></span>
+            </label>
+            <br>
+            <br>
+            <h3>Hardcore</h3>
+            <label class="switch" id = "sw2">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class = "modal" id = 'modal2'>
+        <span class="close">&times;</span>
+        <div class= "modal-content" id = "lost-modal" style = "height: 280px;">
+            <h2>Game over!</h2>
+            <h2><button class= "btn btn-modal" id = "newGame">New Game</button></h2>
+        </div>
+
+    </div>
+</body>
+
+</html>
