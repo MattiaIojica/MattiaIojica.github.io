@@ -17,20 +17,6 @@ html {
     box-sizing: border-box;
 }
 
-h1{
-    color: 000;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 70px;
-    text-align: center;
-}
-
-p{
-    font-size: 30px;
-    bottom: 150px;
-    width:fit-content;
-    background: transparent;
-}
-
 span{
     z-index: 1;
 }
@@ -39,8 +25,23 @@ span{
     margin: 5px;
     bottom: 150px;
     width:fit-content;
-    font-size: 35px;
+    font-size: 40px;
     background: transparent;
+    margin-top: 7px;
+}
+
+p{
+    font-size: 35px;
+    bottom: 150px;
+    width:fit-content;
+    background: transparent;
+}
+
+
+h1{
+    color: 000;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
 }
 
 h2{
@@ -293,6 +294,14 @@ main {
         height: 60px;
         cursor: pointer;
     }
+
+    h1{
+        font-size: 70px;
+    }
+
+    p{
+        font-size: 42px;
+    }
 }
 
 @media only screen and (max-width: 1000px){
@@ -312,6 +321,12 @@ main {
         height: 45px;
         cursor: pointer;
     }
+
+    h1{
+        font-size: 60px;
+    }
+
+
 }
 
 
