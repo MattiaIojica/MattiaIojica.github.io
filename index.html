@@ -27,12 +27,12 @@
             <p>Best Score:</p>
             <div class = "best--score" type = "bestsc"> 0</div>
         </div>
-        <img src="images/settings.png" alt="settings button" class="top top--right" id = "sett">
+        <img src="images/moon.png" alt="settings button" class="top top--right" id = "sett">
     </div>
 
     <main>
         <section class="player player--active">
-            <button class= "btn">New Game</button>
+            <button class= "btn" id = "newgame">New Game</button>
         
             <div id = "container">
                 <svg></svg>
@@ -66,10 +66,19 @@
         <span class="close">&times;</span>
         <div class= "modal-content" id = "lost-modal" style = "height: 280px;">
             <h2>Game over!</h2>
-            <h2><button class= "btn btn-modal" id = "newGame">New Game</button></h2>
+            <h2><button class= "btn btn-modal" id = "newgame-modal">New Game</button></h2>
         </div>
 
     </div>
 </body>
+
+<script>
+
+    $(document).ready(function() {
+        $imgsrc = $('img').attr('src');
+        console.log($imgsrc);
+    });
+
+</script>
 
 </html>

@@ -9,7 +9,8 @@ $(document).ready(function(){
     var random_color, random_number;
     var circles;
     var n = 2;
-    const btnNew = document.querySelector('.btn');                
+    const btnNew = document.getElementById("newgame");       
+    const btnNewModal = document.getElementById("newgame-modal");       
     const sett = document.getElementById("sett");
     const mod = document.getElementById('modal1');
     const modal2 = document.getElementById('modal2');
@@ -19,6 +20,8 @@ $(document).ready(function(){
     const switch1 = document.getElementById('sw1');
     const switch2 = document.getElementById('sw2');
     mod.style.display = "none";
+    modal2.style.display = "none";
+    // sett_img = document.getElementById("sett");
 
 
 
@@ -162,17 +165,17 @@ $(document).ready(function(){
     function addHandlers(){
         d3.selectAll("circle")  
         .on("click", function(){
-            if(mod.style.display == "none"){
+            if(mod.style.display == "none" && modal2.style.display == "none"){
                 if(this.getAttribute("id") == random_number){
-                    this.diff = "false";                 
-                    score.map(elem => {
-                        elem.innerHTML = parseInt(elem.innerHTML) + 1;
-                        sc = parseInt(elem.innerHTML);
-                    })
-                    
-                    if(sc % 10 == 0 && sc < 101){
-                        n = n + 1;
-                    }
+                        // this.diff = "false";                 
+                        score.map(elem => {
+                            elem.innerHTML = parseInt(elem.innerHTML) + 1;
+                            sc = parseInt(elem.innerHTML);
+                        })
+                        
+                        if(sc % 10 == 0 && sc < 101){
+                            n = n + 1;
+                        }
                     
                     
                         for(const c of circles)
@@ -194,12 +197,14 @@ $(document).ready(function(){
                         best_score.map(elem=>{
                             bsc = parseInt(elem.innerHTML);
                         })
+
                         
                         if(sc > bsc)
                         {
-                            d3.select('modal2').append('p');
+                            // d3.select('modal2').append('p');
                             best_score.map(elem => {
                                 elem.innerHTML = sc;
+                                bsc = sc;
                             })
 
                             const node = document.createElement("h2");
@@ -207,27 +212,17 @@ $(document).ready(function(){
                             const textnode = document.createTextNode("New Best Score!");
                             node.appendChild(textnode);
                             document.getElementById('lost-modal').appendChild(node);
+                            sc = 0;
                         }
                         else
                         {
                             modal2.style.height = "290px";
+                            var node = document.getElementsByClassName("text-lost")[0];
+                            if(node != undefined){
+                                document.getElementById('lost-modal').removeChild(node);
+                            }
                         }
-                        
-                        const newGame = document.getElementById("newGame");
-
-                        newGame.addEventListener('click', init);
-
-                        // for(const c of circles)
-                        // c.remove();
-                        
-                        // for(var i = 0; i < n * n; i++)
-                        // data.pop();
-                        
-                        // score.map(elem => {
-                        //     elem.innerHTML = 0;
-                        // })
-                        // init();
-                    // n = 2;
+                        // const newGame = document.getElementById("newGame");
                     }
                 }
             }
@@ -240,8 +235,6 @@ $(document).ready(function(){
     
 
     function addData(nrr){
-
-        // var co = nrr * nrr;
         var raza = Math.floor(512 / (nrr * 2));
 
         for(var i = 1; i < nrr * 2; i+=2)
@@ -285,10 +278,16 @@ $(document).ready(function(){
     
     const init = function(){
 
-        if(modal2.style.display = "block")
+        if(modal2.style.display == "block")
         {
-            modal2.style.display = "none";
+            return;
         }
+        var node = document.getElementsByClassName("text-lost")[0];
+        if(node != undefined){
+            document.getElementById('lost-modal').removeChild(node);
+        }
+
+        
         
         
         if(mod.style.display == "none"){
@@ -311,50 +310,58 @@ $(document).ready(function(){
         }
     }
 
-    // var timer_onoff = 0;
+    const newGame = function(){
+        var node = document.getElementsByClassName("text-lost")[0];
+        if(node != undefined){
+            document.getElementById('lost-modal').removeChild(node);
+        }
 
-    // const addTimer = function(){
-    //     timer_onoff += 1;
+        modal2.style.display = "none";     
 
-    // }
+        score.map(elem => {
+            elem.innerHTML = 0;
+        })
+        
+        
+        for(const c of circles)
+        c.remove();
+        
+        for(var i = 0; i < n * n; i++)
+        data.pop();
+        
+        n = 2;
+        count =  0;
+        addData(n);
+        doo();  
+    }
+
 
     btnNew.addEventListener('click', init);
-    // switch1.addEventListener('click', timer_onoff++);    
-
-    // console.log(timer_onoff);
-
-    // bd.addEventListener("click", myFunction);
-
-    // function myFunction() {
-    //     mod.style.display = "none";
-    //     bd.style.filter = "none";
-    //     ma.style.filter = "none";
-    // }
+    btnNewModal.addEventListener('click', newGame);
 
 
     sett.onclick = function(){
-        if(mod.style.display == "none"){
-
-            bd.style.filter = "blur(3px)";
-            ma.style.filter = "blur(3px)";
-            mod.style.display = "block";
-        }
-        else
+        if(modal2.style.display == "block")
         {
-            mod.style.display = "none";
-            bd.style.filter = "none";
-            ma.style.filter = "none";
+            return;
         }
-    }
 
-    span[0].onclick = function(){
-        mod.style.display = "none";
-        bd.style.filter = "none";
-        ma.style.filter = "none";
+        var bod = document.body;
+        bod.classList.toggle("dark-mode");
+        $imgsrc = $('img').attr('src');
+
+        if($imgsrc == "images/moon.png")
+            $("img").attr("src",'images/sun.png');
+        else
+            $("img").attr("src",'images/moon.png');
+        // if(sett.src == "images/sun.png"){
+        //     console.log(sett.src);
+        // }
     }
 
     span[1].onclick = function(){
         modal2.style.display = "none";
+        init();
     }
 
 });
