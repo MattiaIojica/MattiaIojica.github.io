@@ -28,6 +28,7 @@
             <div class = "best--score" type = "bestsc"> 0</div>
         </div>
         <img src="images/moon.png" alt="settings button" class="top top--right" id = "sett">
+        <img src="images/trophy.png" alt="settings button" class="top top--right" style = "right: 13%;" id = "trophy">
     </div>
 
     <main>
@@ -40,45 +41,30 @@
         </section>
     </main>  
 
-    <div class = "modal" id = "modal1">
+    <div class = "modal" id = 'modal1'>
         <span class="close">&times;</span>
-        <div class= "modal-content">
-            <h2>Settings</h2>
-            <br>
-            <br>
-             <h3 id = "left-h3">Timer</h3>
-            <label class="switch" id = "sw1">
-                <input type="checkbox">
-            
-                <span class="slider round"></span>
-            </label>
-            <br>
-            <br>
-            <h3>Hardcore</h3>
-            <label class="switch" id = "sw2">
-                <input type="checkbox">
-                <span class="slider round"></span>
-            </label>
-        </div>
-    </div>
-
-    <div class = "modal" id = 'modal2'>
-        <span class="close">&times;</span>
-        <div class= "modal-content" id = "lost-modal" style = "height: 280px;">
+        <div class= "modal-content" id = "lost-modal" style = "height: 300px;">
             <h2>Game over!</h2>
             <h2><button class= "btn btn-modal" id = "newgame-modal">New Game</button></h2>
         </div>
 
     </div>
+
+    <div class = "modal" id = 'modal2'>
+        <span class="close">&times;</span>
+        <div class= "modal-content" id = "lost-modal" style = "height: 300px;">
+            <h2>New Today Best Score</h2>
+            <form action="" style = "text-align: center;">
+                <input type="text" id="fname" name="firstname" placeholder="Your name..">
+                
+                <input type="submit" value="Submit">
+              </form>
+        </div>
+
+    </div>
+
+
+
 </body>
-
-<script>
-
-    $(document).ready(function() {
-        $imgsrc = $('img').attr('src');
-        console.log($imgsrc);
-    });
-
-</script>
 
 </html>

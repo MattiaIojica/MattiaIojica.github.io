@@ -2,7 +2,7 @@
 $(document).ready(function(){
 
     var count = 0;
-    var sc = 0, bsc = 0;
+    var sc = 0, bsc = 0, top_score = 0;
     var score = [...document.querySelectorAll('[type = number]')];
     var best_score = [...document.querySelectorAll('[type = bestsc]')];
     var last = -1;
@@ -12,15 +12,18 @@ $(document).ready(function(){
     const btnNew = document.getElementById("newgame");       
     const btnNewModal = document.getElementById("newgame-modal");       
     const sett = document.getElementById("sett");
-    const mod = document.getElementById('modal1');
+    const troph = document.getElementById("trophy");
+    const modal1 = document.getElementById('modal1');
     const modal2 = document.getElementById('modal2');
     const span = document.getElementsByClassName('close');
     const bd = document.querySelector('div');
     const ma = document.querySelector('main');
     const switch1 = document.getElementById('sw1');
     const switch2 = document.getElementById('sw2');
-    mod.style.display = "none";
+    modal1.style.display = "none";
     modal2.style.display = "none";
+    var name_top_score = "-";
+    var sss = (($(window).width() <= 851) ? 404 : 512);
     // sett_img = document.getElementById("sett");
 
 
@@ -49,36 +52,10 @@ $(document).ready(function(){
 
 
     
-    var data = [{
-            "x": 128,
-            "y": 128,
-            "radius": 127,
-            "id": count++
-        },
-        {
-            "x": 384,
-            "y": 128,
-            "radius": 127,
-            "id": count++
-        },
-        {
-            "x": 128,
-            "y": 384,
-            "radius": 127,
-            "id": count++
-
-        }
-        ,
-        {
-            "x": 384,
-            "y": 384,
-            "radius": 127,
-            "id": count++
-        }
-    ];
+    var data = [];
 
 
-
+    addData(sss, n);
 
 
     function getRndInteger(min, max) {
@@ -134,9 +111,13 @@ $(document).ready(function(){
     }
     
     
-    function doo(){
-        
-        newColor();
+    function doo(bool){
+        // console.log(bool);
+        if(bool == false)
+            newColor();
+        else
+            keepColor();
+
         circles = d3.selectAll('circle'); 
         circles.data(data);
         applyAttrs();
@@ -160,38 +141,42 @@ $(document).ready(function(){
         
     }
     
-    doo();
+    doo(false);
     
     function addHandlers(){
         d3.selectAll("circle")  
         .on("click", function(){
-            if(mod.style.display == "none" && modal2.style.display == "none"){
+            if(modal1.style.display == "none"){
                 if(this.getAttribute("id") == random_number){
                         // this.diff = "false";                 
                         score.map(elem => {
                             elem.innerHTML = parseInt(elem.innerHTML) + 1;
                             sc = parseInt(elem.innerHTML);
                         })
+
+                        console.log(sc);
                         
                         if(sc % 10 == 0 && sc < 101){
                             n = n + 1;
                         }
                     
                     
-                        for(const c of circles)
-                        c.remove();
+                        // for(const c of circles)
+                        // c.remove();
                         
-                        for(var i = 0; i < n * n; i++)
-                        data.pop();
+                        // for(var i = 0; i < n * n; i++)
+                        // data.pop();
                         
                         count =  0;
+
+                        init(sss, false);
                         
-                        addData(n);
-                        doo();
+                        // addData(sss, n);
+                        // doo(false);
                     }
                     else
                     {
-                        modal2.style.display = "block";
+                        modal1.style.display = "block";
                         // window.alert("Game over!");
                         
                         best_score.map(elem=>{
@@ -209,14 +194,25 @@ $(document).ready(function(){
 
                             const node = document.createElement("h2");
                             node.setAttribute("class", "text-lost");
-                            const textnode = document.createTextNode("New Best Score!");
-                            node.appendChild(textnode);
-                            document.getElementById('lost-modal').appendChild(node);
                             sc = 0;
+                            if(bsc > top_score)
+                            {
+                                // console.log("best");
+                                top_score = bsc;
+                                const textnode = document.createTextNode("New Day Best Score!");
+                                node.appendChild(textnode);
+                            }
+                            else{
+                                // console.log("not");
+                                const textnode = document.createTextNode("New Personal Best Score!");
+                                node.appendChild(textnode);
+                            }
+                            document.getElementById('lost-modal').appendChild(node);
+
                         }
                         else
                         {
-                            modal2.style.height = "290px";
+                            modal1.style.height = "290px";
                             var node = document.getElementsByClassName("text-lost")[0];
                             if(node != undefined){
                                 document.getElementById('lost-modal').removeChild(node);
@@ -234,9 +230,11 @@ $(document).ready(function(){
 
     
 
-    function addData(nrr){
-        var raza = Math.floor(512 / (nrr * 2));
-
+    function addData(size, nrr){
+        // var x = window.matchMedia("(max-width: 850px)");
+        var raza = Math.floor(size / (nrr * 2));
+        
+        
         for(var i = 1; i < nrr * 2; i+=2)
         {
             for(var j = 1; j < nrr * 2; j+=2)
@@ -248,11 +246,81 @@ $(document).ready(function(){
                         "radius": (raza - 1),
                         "id": count
                     });
-                count++;
+                    count++;
+                }
             }
-        }
     }
 
+    function keepColor(){
+
+        for(var i = 0; i < data.length; i++){
+        
+            if(i == random_number)
+            {
+                if(sc < 11)
+                    d3.select('svg').append('circle').style("fill", color_true[random_color]);
+                else
+                    d3.select('svg').append('circle').style("fill", hard_colors_t[random_color]);
+            }
+            else
+            {
+                if(sc < 11)
+                    d3.select('svg').append('circle').style("fill", color_false[random_color]);
+                    else
+                    d3.select('svg').append('circle').style("fill", hard_colors_f[random_color]);
+
+            }
+        }
+
+    }
+
+    var lastWidth = $(window).width();
+    var startWidth = $(window).width();
+
+    // console.log(lastWidth);
+
+    function check() {
+        // var x = $(window).width();
+        var x = $(window).width();
+
+        if(startWidth != -1){
+            if(startWidth <= 850)
+            {
+                sss = 404;
+                init(sss, true);
+            }
+            else{
+                sss = 512;
+                init(sss, true);
+            }
+            startWidth = -1;
+        }
+
+        if(x != lastWidth){
+
+            if(x > 850)
+            {
+                sss = 512;
+                init(sss, true);
+                // lastWidth = x;
+            }
+            else
+            if(x < 851)
+            {
+                sss = 404;
+                init(sss, true);
+                // lastWidth = x;
+                
+            }
+            
+            lastWidth = x;
+        }
+            setTimeout(check, 1);
+        }
+        
+
+
+    check();
 
 
     function applyAttrs(){
@@ -276,9 +344,9 @@ $(document).ready(function(){
 
     
     
-    const init = function(){
+    function init(size = 512, bool = false){
 
-        if(modal2.style.display == "block")
+        if(modal1.style.display == "block")
         {
             return;
         }
@@ -287,27 +355,25 @@ $(document).ready(function(){
             document.getElementById('lost-modal').removeChild(node);
         }
 
+        // if(bool == false)
+        // {
+        //     score.map(elem => {
+        //         elem.innerHTML = 0;
+        //     })
+        // }
         
         
+        for(const c of circles)
+        c.remove();
         
-        if(mod.style.display == "none"){
-            score.map(elem => {
-                elem.innerHTML = 0;
-            })
-            
-            
-            for(const c of circles)
-            c.remove();
-            
-            for(var i = 0; i < n * n; i++)
-            data.pop();
-            
-            n = 2;
-            count =  0;
-            addData(n);
-            doo();  
+        for(var i = 0; i < n * n; i++)
+        data.pop();
+        
+        n = 2;
+        count =  0;
+        addData(size, n);
+        doo(bool);  
 
-        }
     }
 
     const newGame = function(){
@@ -316,7 +382,7 @@ $(document).ready(function(){
             document.getElementById('lost-modal').removeChild(node);
         }
 
-        modal2.style.display = "none";     
+        modal1.style.display = "none";     
 
         score.map(elem => {
             elem.innerHTML = 0;
@@ -331,17 +397,23 @@ $(document).ready(function(){
         
         n = 2;
         count =  0;
-        addData(n);
-        doo();  
+        addData(sss, n);
+        doo(false);  
     }
 
+    const ini = function(){
+        score.map(elem => {
+            elem.innerHTML = 0;
+        })
+        init(sss, false);
+    }
 
-    btnNew.addEventListener('click', init);
+    btnNew.addEventListener('click', ini);
     btnNewModal.addEventListener('click', newGame);
 
 
     sett.onclick = function(){
-        if(modal2.style.display == "block")
+        if(modal1.style.display == "block")
         {
             return;
         }
@@ -359,9 +431,36 @@ $(document).ready(function(){
         // }
     }
 
+    span[0].onclick = function(){
+        modal1.style.display = "none";
+        ini();
+    }
+
     span[1].onclick = function(){
         modal2.style.display = "none";
-        init();
     }
+
+    troph.onclick = function(){
+        if(modal2.style.display == "none"){
+            modal2.style.display = "block";
+        }
+        else
+        {
+            modal2.style.display = "none";
+        }
+    }
+    
+    function date_check(){
+        const date = new Date();
+        // console.log("check");
+
+        if(date.getHours() == 15 && date.getMinutes() == 0 && date.getSeconds == 0){
+            top_score = 0;
+            name_top_score = "-";
+        }
+        setTimeout(date_check, 1000);
+    }
+
+    date_check();
 
 });
