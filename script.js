@@ -2,7 +2,7 @@
 $(document).ready(function(){
 
     var count = 0;
-    var sc = 0, bsc = 0, top_score = 0;
+    var sc = 0, bsc = 0;
     var score = [...document.querySelectorAll('[type = number]')];
     var best_score = [...document.querySelectorAll('[type = bestsc]')];
     var last = -1;
@@ -13,16 +13,21 @@ $(document).ready(function(){
     const btnNewModal = document.getElementById("newgame-modal");       
     const sett = document.getElementById("sett");
     const troph = document.getElementById("trophy");
-    const modal1 = document.getElementById('modal1');
-    const modal2 = document.getElementById('modal2');
+    const modal1 = document.getElementById('modal1'); //modal game over with no best new score
+    const modal2 = document.getElementById('modal2'); //modal new today's top score
+    const modal3 = document.getElementById('modal3'); //modal today's top - Trophy
     const span = document.getElementsByClassName('close');
     const bd = document.querySelector('div');
     const ma = document.querySelector('main');
     const switch1 = document.getElementById('sw1');
     const switch2 = document.getElementById('sw2');
+    var top_score_name = localStorage.getItem("top_score_name");
+    var top_score_local = localStorage.getItem("top_score_local");
+    var top_score = localStorage.getItem("top_score_local");
+    const form = document.querySelector("#myForm");
     modal1.style.display = "none";
     modal2.style.display = "none";
-    var name_top_score = "-";
+    modal3.style.display = "none";
     var sss = (($(window).width() <= 851) ? 404 : 512);
     // sett_img = document.getElementById("sett");
 
@@ -63,7 +68,8 @@ $(document).ready(function(){
     }
     
     
-    
+    // console.log(top_score);
+
     function newColor(){
         
         random_number = getRndInteger(0, data.length);
@@ -146,6 +152,7 @@ $(document).ready(function(){
     function addHandlers(){
         d3.selectAll("circle")  
         .on("click", function(){
+            // console.log(n);
             if(modal1.style.display == "none"){
                 if(this.getAttribute("id") == random_number){
                         // this.diff = "false";                 
@@ -154,71 +161,59 @@ $(document).ready(function(){
                             sc = parseInt(elem.innerHTML);
                         })
 
-                        console.log(sc);
+                        // console.log(sc);
                         
                         if(sc % 10 == 0 && sc < 101){
                             n = n + 1;
                         }
-                    
-                    
-                        // for(const c of circles)
-                        // c.remove();
-                        
-                        // for(var i = 0; i < n * n; i++)
-                        // data.pop();
-                        
                         count =  0;
-
                         init(sss, false);
-                        
-                        // addData(sss, n);
-                        // doo(false);
                     }
                     else
                     {
-                        modal1.style.display = "block";
-                        // window.alert("Game over!");
-                        
+                        // modal2.style.display = "block";
+
                         best_score.map(elem=>{
                             bsc = parseInt(elem.innerHTML);
                         })
 
-                        
+                        var newBest = new Boolean(false);
+
                         if(sc > bsc)
                         {
-                            // d3.select('modal2').append('p');
                             best_score.map(elem => {
                                 elem.innerHTML = sc;
                                 bsc = sc;
                             })
-
-                            const node = document.createElement("h2");
-                            node.setAttribute("class", "text-lost");
+                            newBest = true;
                             sc = 0;
-                            if(bsc > top_score)
-                            {
-                                // console.log("best");
-                                top_score = bsc;
-                                const textnode = document.createTextNode("New Day Best Score!");
-                                node.appendChild(textnode);
-                            }
-                            else{
-                                // console.log("not");
-                                const textnode = document.createTextNode("New Personal Best Score!");
-                                node.appendChild(textnode);
-                            }
-                            document.getElementById('lost-modal').appendChild(node);
-
                         }
                         else
                         {
+                            modal1.style.display = "block";
                             modal1.style.height = "290px";
                             var node = document.getElementsByClassName("text-lost")[0];
                             if(node != undefined){
                                 document.getElementById('lost-modal').removeChild(node);
                             }
                         }
-                        // const newGame = document.getElementById("newGame");
+
+                        if(bsc > top_score && newBest == true)
+                        {
+                            modal2.style.display = "block";
+                            top_score = bsc;
+                            localStorage.setItem("top_score_local", top_score);
+                        }
+                        else
+                        if(bsc <= top_score && newBest == true)
+                        {
+                            modal1.style.display = "block";
+                            const node = document.createElement("h2");
+                            node.setAttribute("class", "text-lost");
+                            const textnode = document.createTextNode("New Personal Best Score!");
+                            node.appendChild(textnode);
+                            document.getElementById('lost-modal').appendChild(node);
+                        }
                     }
                 }
             }
@@ -227,11 +222,9 @@ $(document).ready(function(){
             );
     }
 
-
     
 
     function addData(size, nrr){
-        // var x = window.matchMedia("(max-width: 850px)");
         var raza = Math.floor(size / (nrr * 2));
         
         
@@ -277,10 +270,8 @@ $(document).ready(function(){
     var lastWidth = $(window).width();
     var startWidth = $(window).width();
 
-    // console.log(lastWidth);
 
     function check() {
-        // var x = $(window).width();
         var x = $(window).width();
 
         if(startWidth != -1){
@@ -302,15 +293,12 @@ $(document).ready(function(){
             {
                 sss = 512;
                 init(sss, true);
-                // lastWidth = x;
             }
             else
             if(x < 851)
             {
                 sss = 404;
                 init(sss, true);
-                // lastWidth = x;
-                
             }
             
             lastWidth = x;
@@ -341,12 +329,11 @@ $(document).ready(function(){
                 return d.id;
             });
     }
-
     
     
     function init(size = 512, bool = false){
 
-        if(modal1.style.display == "block")
+        if(modal1.style.display == "block" || modal2.style.display == "block")
         {
             return;
         }
@@ -354,13 +341,6 @@ $(document).ready(function(){
         if(node != undefined){
             document.getElementById('lost-modal').removeChild(node);
         }
-
-        // if(bool == false)
-        // {
-        //     score.map(elem => {
-        //         elem.innerHTML = 0;
-        //     })
-        // }
         
         
         for(const c of circles)
@@ -369,21 +349,22 @@ $(document).ready(function(){
         for(var i = 0; i < n * n; i++)
         data.pop();
         
-        n = 2;
         count =  0;
         addData(size, n);
         doo(bool);  
 
     }
 
+    //modal2 button "New Game"
     const newGame = function(){
+        
         var node = document.getElementsByClassName("text-lost")[0];
         if(node != undefined){
             document.getElementById('lost-modal').removeChild(node);
         }
-
+        
         modal1.style.display = "none";     
-
+        
         score.map(elem => {
             elem.innerHTML = 0;
         })
@@ -402,6 +383,7 @@ $(document).ready(function(){
     }
 
     const ini = function(){
+        n = 2;
         score.map(elem => {
             elem.innerHTML = 0;
         })
@@ -413,7 +395,7 @@ $(document).ready(function(){
 
 
     sett.onclick = function(){
-        if(modal1.style.display == "block")
+        if(modal2.style.display == "block")
         {
             return;
         }
@@ -426,9 +408,6 @@ $(document).ready(function(){
             $("img").attr("src",'images/sun.png');
         else
             $("img").attr("src",'images/moon.png');
-        // if(sett.src == "images/sun.png"){
-        //     console.log(sett.src);
-        // }
     }
 
     span[0].onclick = function(){
@@ -436,31 +415,69 @@ $(document).ready(function(){
         ini();
     }
 
+
     span[1].onclick = function(){
-        modal2.style.display = "none";
+        modal3.style.display = "none";
+        var node = document.getElementsByClassName("today-top")[0];
+        if(node != undefined){
+            document.getElementById('todays-top').removeChild(node);
+        }
     }
 
     troph.onclick = function(){
-        if(modal2.style.display == "none"){
-            modal2.style.display = "block";
+        if(modal1.style.display == "block" || modal2.style.display == "block")
+            return;
+        if(modal3.style.display == "none"){
+            const node = document.createElement("h2");
+            modal3.style.display = "block";
+            node.setAttribute("class", "today-top");
+            const textnode = document.createTextNode("🥇 " + localStorage.getItem("top_score_name") + " 🥇");
+            node.appendChild(textnode);
+            document.getElementById('todays-top').appendChild(node);
+            
+            const node2 = document.createElement("h2");
+            node2.setAttribute("class", "today-top-score");
+            const textscore = document.createTextNode("Score: " + localStorage.getItem("top_score_local"));
+            node2.appendChild(textscore);
+            document.getElementById('todays-top').appendChild(node2);
         }
         else
         {
-            modal2.style.display = "none";
+            modal3.style.display = "none";
+            var node = document.getElementsByClassName("today-top")[0];
+            if(node != undefined){
+                document.getElementById('todays-top').removeChild(node);
+            }
+
+            var node2 = document.getElementsByClassName("today-top-score")[0];
+            if(node2 != undefined){
+                document.getElementById('todays-top').removeChild(node2);
+            }
         }
     }
     
     function date_check(){
         const date = new Date();
-        // console.log("check");
 
-        if(date.getHours() == 15 && date.getMinutes() == 0 && date.getSeconds == 0){
-            top_score = 0;
-            name_top_score = "-";
+        if(date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0){
+            localStorage.setItem("top_score_name", "---");
+            localStorage.setItem("top_score_local", 0);
         }
         setTimeout(date_check, 1000);
     }
 
     date_check();
 
+    
+    form.addEventListener("submit", function (evt) {
+
+        var name = document.getElementById('fname').value;
+        // name_top_score = name;
+        modal2.style.display = "none";
+        localStorage.setItem("top_score_name", name);
+
+        newGame();
+        event.preventDefault();
+        return false;
+    });
 });

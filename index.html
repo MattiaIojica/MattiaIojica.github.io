@@ -51,14 +51,22 @@
     </div>
 
     <div class = "modal" id = 'modal2'>
-        <span class="close">&times;</span>
-        <div class= "modal-content" id = "lost-modal" style = "height: 300px;">
-            <h2>New Today Best Score</h2>
-            <form action="" style = "text-align: center;">
-                <input type="text" id="fname" name="firstname" placeholder="Your name..">
-                
+        <!-- <span class="close">&times;</span> -->
+        <div class= "modal-content-top" id = "new-top" style = "height: 300px;">
+            <h2>New Today's TOP SCORE</h2>
+            <form id = 'myForm'>
+                <input type="text" id="fname" name="firstname" placeholder="Your name.." maxlength="10">
                 <input type="submit" value="Submit">
-              </form>
+            </form>
+        </div>
+
+    </div>
+
+    <div class = "modal" id = 'modal3' style = "width: 450px;">
+        <span class="close">&times;</span>
+        <div class= "modal-content top-score" id = "todays-top" style = "height: 300px;">
+            <h2>Today's Best Score</h2>
+
         </div>
 
     </div>

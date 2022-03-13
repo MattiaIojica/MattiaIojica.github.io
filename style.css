@@ -21,6 +21,10 @@ span{
     z-index: 1;
 }
 
+form{
+    text-align: center;
+}
+
 .best--score{
     margin: 5px;
     bottom: 150px;
@@ -151,7 +155,8 @@ main {
     left: 10%;
     right: 10%;
     width: 80%;
-    height: fit-content;
+    /* height: fit-content; */
+    height: 75%;
     background-color: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(200px);
     filter: blur();
@@ -216,13 +221,14 @@ main {
 
 .text-lost{
     position: relative;
-    top: 2%;
+    /* top: 2%; */
     margin: 0px auto 0px auto;
     font-size: 32px;
     width: fit-content;
     color: #000;
     font-weight: bold;
 }
+
 
 .hidden {
   display: none;
@@ -240,7 +246,7 @@ main {
     border-radius: 9px;
     box-shadow: 0px 7px 5rem rgb(0 0 0 / 25%);
     background-color: #fff;
-
+    
     margin: 0 auto 0 auto;
 }
 
@@ -258,6 +264,33 @@ main {
     overflow: hidden;
 }
 
+.modal-content-top {
+    position: absolute;
+    margin: auto;
+    padding: 8px;
+    width: 100%;
+    /* top: -4%; */
+    align-items: center;
+    text-align: center;
+    /* margin-left: 8%; */
+    /* margin-top: 9%; */
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.top-score{
+    margin-top: 10%;
+}
+
+.today-top{
+    color: rebeccapurple;
+    font-size: 35px;
+}
+
+.today-top-score{
+    color:crimson;
+}
+
 /* Close button modal */
 
 .close {
@@ -272,13 +305,15 @@ main {
     right: 6%;
     background-color: transparent;
 }
-  
+
 .close:hover,
 .close:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
 }
+
+
 
 @media only screen and (min-width: 1000px){
     .top--right{
